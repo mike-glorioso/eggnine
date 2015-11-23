@@ -4,7 +4,11 @@
 package com.eggnine.api.batchprocessing;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+
+import org.junit.Test;
 
 import com.eggnine.api.batchprocessing.BatchInputListener.BatchInputListenerException;
 import com.eggnine.api.batchprocessing.BatchInputListener.BatchInputProvider;
@@ -14,17 +18,18 @@ import com.eggnine.api.batchprocessing.BatchInputListener.BatchInputProvider;
  * 
  * @since 0
  */
-public class BatchInputListenerTest {
-	BatchInput input = new BatchInputTest().getBatchInput();
+public class BatchInputListenerTest<I extends BatchInput,L extends BatchInputListener<I>> {
+	protected I input = new BatchInputTest<I>().getBatchInput();
 	
-	<I extends BatchInput> BatchInputListener<I> getBatchInputListener(final Boolean acceptingInputs) {
-		return new BatchInputListener<I>() {
+	@SuppressWarnings("unchecked") // subclasses must override
+	L getBatchInputListener(final Boolean acceptingInputs) {
+		BatchInputListener<?> listener = new BatchInputListener<I>() {
 			BatchInputProvider<I> provider = new BatchInputProvider<I>() {
 
 				@Override
 				public Iterator<I> iterator() {
-					// TODO Auto-generated method stub
-					return null;
+					List<I> emptyList = Collections.emptyList(); 
+					return emptyList.iterator();
 				}
 
 				@Override
@@ -32,7 +37,6 @@ public class BatchInputListenerTest {
 					// TODO Auto-generated method stub
 					return null;
 				}
-				
 			};
 
 			@Override
@@ -43,8 +47,10 @@ public class BatchInputListenerTest {
 			@Override
 			public Boolean isAcceptingInputs() {
 				return acceptingInputs;
-			};
+			}
+			
 		};
+		return (L) listener;
 	}
 	
 	/**
@@ -52,10 +58,11 @@ public class BatchInputListenerTest {
 	 * @throws BatchInputListenerException 
 	 * 
 	 */
+	@Test
 	public void addBatchInputAcceptingTest() throws BatchInputListenerException {
-		BatchInputListener<BatchInput> listener = getBatchInputListener(true);
+		L listener = getBatchInputListener(true);
 		assert listener.isAcceptingInputs();
-		BatchInputProvider<BatchInput> provider = listener.addBatchInput(input);
+		BatchInputProvider<I> provider = listener.addBatchInput(input);
 		assert provider != null;
 		Boolean found = false;
 		for(BatchInput i: provider) {
@@ -72,11 +79,11 @@ public class BatchInputListenerTest {
 	 * @throws BatchInputListenerException 
 	 * 
 	 */
+	@Test
 	public void addBatchInputNotAcceptingTest() throws BatchInputListenerException {
-		BatchInputListener<BatchInput> listener = getBatchInputListener(false);
+		BatchInputListener<I> listener = getBatchInputListener(false);
 		assert !listener.isAcceptingInputs();
-		BatchInput input = new BatchInputTest().getBatchInput();
-		BatchInputProvider<BatchInput> provider = listener.addBatchInput(input);
+		BatchInputProvider<I> provider = listener.addBatchInput(input);
 		assert provider == null;
 	}
 

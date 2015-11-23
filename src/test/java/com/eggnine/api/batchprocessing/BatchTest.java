@@ -5,6 +5,8 @@ package com.eggnine.api.batchprocessing;
 
 import java.util.Date;
 
+import org.junit.Test;
+
 /**
  * test the minimum requirements for a {@link Batch}
  *
@@ -41,7 +43,7 @@ public class BatchTest {
 			
 			@Override
 			public void process() {
-				throw new UnsupportedOperationException(String.format("%s.process() is not supported. Use a proper implementation of %s", this.getClass(), this.getClass()));
+				//do nothing = success
 			}
 		};
 		
@@ -50,6 +52,7 @@ public class BatchTest {
 	/**
 	 * {@link Batch#getCreatedAt()} should never be null and should be after the current date/time
 	 */
+	@Test
 	public void getCreatedAtTest() {
 		Batch<?> batch = getBatch();
 		Date date = batch.getCreatedAt();
@@ -60,6 +63,7 @@ public class BatchTest {
 	/**
 	 * {@link Batch#getProcessingStartedAt()} should be null or should be after the created date/time
 	 */
+	@Test
 	public void getProcessingStartedAtTest() {
 		Batch<?> batch = getBatch();
 		Date date = batch.getProcessingStartedAt();
@@ -71,6 +75,7 @@ public class BatchTest {
 	/**
 	 * {@link Batch#getProcessingEndedAt()} should be null or should be after the startedAt date/time
 	 */
+	@Test
 	public void getProcessingEndedAtTest() {
 		Batch<?> batch = getBatch();
 		Date date = batch.getProcessingEndedAt();
@@ -82,10 +87,17 @@ public class BatchTest {
 	/**
 	 * {@link Batch#isSuccessful()} should be true or false;
 	 */
+	@Test
 	public void isSuccessfulTest() {
 		Batch<?> batch = getBatch();
 		Boolean success = batch.isSuccessful();
 		assert success != null;
 		assert success == true || success == false;
+	}
+	
+	@Test
+	public void processTest() {
+		Batch<?> batch = getBatch();
+		batch.process();
 	}
 }

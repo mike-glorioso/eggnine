@@ -3,6 +3,8 @@
  */
 package com.eggnine.roundengine;
 
+import org.junit.Test;
+
 import com.eggnine.api.batchprocessing.BatchTest;
 
 
@@ -15,6 +17,7 @@ public class RoundTest extends BatchTest {
 		return new Round();
 	}
 	
+	@Test
 	public void roundComparatorTest() {
 		Round round1 = getBatch();
 		Round round2 = getBatch();

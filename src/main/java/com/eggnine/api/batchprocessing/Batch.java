@@ -37,7 +37,7 @@ public interface Batch<B extends BatchInput> {
 	Boolean isSuccessful();
 	
 	/**
-	 * process the batch
+	 * process the batchInputs
 	 */
 	void process();
 }

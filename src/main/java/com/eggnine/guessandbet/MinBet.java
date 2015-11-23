@@ -30,4 +30,9 @@ public class MinBet extends PlayerInput {
 		
 	}
 
+	public Integer getBet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

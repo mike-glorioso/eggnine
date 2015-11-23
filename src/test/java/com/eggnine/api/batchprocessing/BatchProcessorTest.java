@@ -10,13 +10,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
+
 /**
  *
  * @since 0
  */
 public class BatchProcessorTest<B extends Batch<BatchInput>> {
 
-	 public BatchProcessor<B> getBatchProcessor() {
+	public BatchProcessor<B> getBatchProcessor() {
 		return new BatchProcessor<B>() {
 
 			@Override
@@ -38,13 +40,15 @@ public class BatchProcessorTest<B extends Batch<BatchInput>> {
 		};
 	}
 
-	void returnBatchesTest() {
+	@Test
+	public void returnBatchesTest() {
 		BatchProcessor<B> batchProcessor = getBatchProcessor();
 		assert batchProcessor.getBatches() != null;
 		assert !batchProcessor.getBatches().isEmpty();
 	}
 	
-	void successBatchProcessingTest() {
+	@Test
+	public void successBatchProcessingTest() {
 		BatchProcessor<B> batchProcessor = getBatchProcessor();
 		BatchFilter<B> noReturnsFilter = new BatchFilterTest<B>().getBatchFilter();
 		Map<B, Collection<TriggerValidationFailure>> results = batchProcessor.triggerBatchProcessing(noReturnsFilter);

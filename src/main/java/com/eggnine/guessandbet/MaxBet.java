@@ -30,4 +30,8 @@ public class MaxBet extends PlayerInput {
 		
 	}
 
+	public Integer getBet() {
+		return null;
+	}
+
 }

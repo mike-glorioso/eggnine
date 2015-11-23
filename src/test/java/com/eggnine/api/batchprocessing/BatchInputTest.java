@@ -5,25 +5,43 @@ package com.eggnine.api.batchprocessing;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import org.junit.Test;
 
 import com.eggnine.api.batchprocessing.BatchInput.BatchInputProcessStatusListener;
-import com.eggnine.api.batchprocessing.BatchInput.BatchInputStatus;
 
 /**
  * test {@link BatchInput} the basic contract of {@link BatchInput}
  * 
  * @since 0
  */
-public class BatchInputTest {
+public class BatchInputTest<I extends BatchInput> {
 	
-	BatchInput input = getBatchInput();
+	protected I input = getBatchInput();
+	protected List<BatchInputListener<I>> inputListeners = new ArrayList<>();
+	protected List<BatchInputProcessStatusListener> statusListeners = new ArrayList<>();
+	
+	{
+		BatchInputListenerTest<I,? extends BatchInputListener<I>> inputListenerTest = new BatchInputListenerTest<>();
+		BatchInputListener<I> inputListener = inputListenerTest.getBatchInputListener(true);
+		inputListeners.add(inputListener);
+		inputListener = inputListenerTest.getBatchInputListener(true);
+		inputListeners.add(inputListener);
+		BatchInputProcessStatusListenerTest processListenerTest = new BatchInputProcessStatusListenerTest();
+		BatchInputProcessStatusListener statusListener = processListenerTest.getStatusListener();
+		statusListeners.add(statusListener);
+		statusListener = processListenerTest.getStatusListener();
+		statusListeners.add(statusListener);
+	}
 	
 	void setup() {
 		
 	}
 	
-	public BatchInput getBatchInput() {
-		return new BatchInput() {
+	@SuppressWarnings("unchecked") // subclasses must override this
+	public I getBatchInput() {
+		return (I) new BatchInput() {
 			Collection<BatchInputProcessStatusListener> listeners = new ArrayList<>();
 
 			@Override
@@ -51,8 +69,7 @@ public class BatchInputTest {
 
 			@Override
 			public void validate(Batch<? extends BatchInput> b) {
-				// TODO Auto-generated method stub
-				
+				// do nothing = success
 			}
 			
 		};
@@ -62,9 +79,20 @@ public class BatchInputTest {
 	 * This tests the main point of the {@link BatchInput}
 	 * 
 	 */
-	void processSuccessTest() {
+	@Test
+	public void processSuccessTest() {
 		Batch<BatchInput> batch = new BatchTest().getBatch();
 		input.process(batch);
+	}
+	
+	/**
+	 * This tests the validation prior to processing
+	 * 
+	 */
+	@Test
+	public void validateSuccessTest() {
+		Batch<BatchInput> batch = new BatchTest().getBatch();
+		input.validate(batch);
 	}
 
 	/**
@@ -72,7 +100,9 @@ public class BatchInputTest {
 	 * @param listener
 	 * @return true iff the listener was added
 	 */
-	void addInputProcessStatusListenerTest(BatchInputProcessStatusListener listener) {
+	@Test
+	public void addInputProcessStatusListenerTest() {
+		BatchInputProcessStatusListener listener = statusListeners.get(0);
 		input.addInputProcessStatusListener(listener);
 	}
 	
@@ -81,8 +111,9 @@ public class BatchInputTest {
 	 * @param listener
 	 * @return true iff the listener was added
 	 */
-	void addMultipleInputProcessStatusListenersTest(BatchInputProcessStatusListener ... listeners) {
-		for(BatchInputProcessStatusListener listener: listeners) {
+	@Test
+	public void addMultipleInputProcessStatusListenersTest() {
+		for(BatchInputProcessStatusListener listener: statusListeners) {
 			input.addInputProcessStatusListener(listener);
 		}
 	}
@@ -93,8 +124,9 @@ public class BatchInputTest {
 	 * @return true if all references to the listener were removed
 	 * 
 	 */
-	void removeInputProcessStatusListenerTest(BatchInputProcessStatusListener listener) {
-		input.removeInputProcessStatusListener(listener);
+	@Test
+	public void removeInputProcessStatusListenerTest() {
+		input.removeInputProcessStatusListener(statusListeners.get(0));
 	}
 	
 	/**
@@ -103,8 +135,9 @@ public class BatchInputTest {
 	 * @return true if all references to the listener were removed
 	 * 
 	 */
-	void removeMultipleInputProcessStatusListenerTest(BatchInputProcessStatusListener ... listeners) {
-		for(BatchInputProcessStatusListener listener: listeners) {
+	@Test
+	public void removeMultipleInputProcessStatusListenerTest() {
+		for(BatchInputProcessStatusListener listener: statusListeners) {
 			input.removeInputProcessStatusListener(listener);
 		}
 	}
@@ -115,7 +148,9 @@ public class BatchInputTest {
 	 * @return true if all references to the listener were removed
 	 * 
 	 */
-	void addThenRemoveInputProcessStatusListenerTest(BatchInputProcessStatusListener listener) {
+	@Test
+	public void addThenRemoveInputProcessStatusListenerTest() {
+		BatchInputProcessStatusListener listener = statusListeners.get(0);
 		input.addInputProcessStatusListener(listener);
 		input.removeInputProcessStatusListener(listener);
 	}
@@ -126,7 +161,9 @@ public class BatchInputTest {
 	 * @return true if all references to the listener were removed
 	 * 
 	 */
-	void addSameInputProcessStatusListenerTest(BatchInputProcessStatusListener listener) {
+	@Test
+	public void addSameInputProcessStatusListenerTest() {
+		BatchInputProcessStatusListener listener = statusListeners.get(0);
 		input.removeInputProcessStatusListener(listener);
 		input.removeInputProcessStatusListener(listener);
 	}
@@ -137,16 +174,16 @@ public class BatchInputTest {
 	 * @return true if all references to the listener were removed
 	 * 
 	 */
-	void removeSameInputProcessStatusListenerTest(BatchInputProcessStatusListener listener) {
+	@Test
+	public void removeSameInputProcessStatusListenerTest() {
+		BatchInputProcessStatusListener listener = statusListeners.get(0);
 		input.addInputProcessStatusListener(listener);
 		input.addInputProcessStatusListener(listener);
 	}
-	
-	void updateStatusTest(BatchInputProcessStatusListener listener, BatchInputStatus s) {
-		listener.updateStatus(s);
-	}
-	
-	void getStatusTest(BatchInputStatus status) {
-		status.toString();
+
+	@Test
+	public void updateStatusTest() {
+		BatchInputProcessStatusListener listener = statusListeners.get(0);
+		listener.updateStatus(new BatchInputStatusTest().getBatchInputStatus());
 	}
 }

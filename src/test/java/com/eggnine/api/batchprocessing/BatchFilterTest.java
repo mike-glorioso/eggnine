@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.junit.Test;
+
 
 /**
  * test the minimum requirements for a {@link BatchFilter}
@@ -71,6 +73,7 @@ public class BatchFilterTest<B extends Batch<?>>  {
 	/**
 	 * {@link BatchFilter#getBatch()} should be null or should be contained by the collection parameter
 	 */
+	@Test
 	public void getBatchTest() {
 		Collection<B> batches = getBatches();
 		BatchFilter<B> batchFilter = getBatchFilter();
@@ -82,6 +85,7 @@ public class BatchFilterTest<B extends Batch<?>>  {
 	/**
 	 * {@link BatchFilter#getBatches()} should never be null and should be a subset of the collection parameter
 	 */
+	@Test
 	public void getBatchesTest() {
 		Collection<B> batches = getBatches();
 		BatchFilter<B> batchFilter = getBatchFilter();

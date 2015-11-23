@@ -3,6 +3,8 @@
  */
 package com.eggnine.guessandbet;
 
+import org.junit.Test;
+
 import com.eggnine.api.batchprocessing.BatchInputTest;
 
 /**
@@ -10,11 +12,13 @@ import com.eggnine.api.batchprocessing.BatchInputTest;
  * @since 1
  *
  */
-public class PlayerInputTest extends BatchInputTest {
+public class PlayerInputTest<I extends PlayerInput> extends BatchInputTest<I> {
 	Player player = new PlayerTest().getPlayer();
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public PlayerInput getBatchInput() {
-		return new PlayerInput(player) {
+	public I getBatchInput() {
+		return (I) new PlayerInput(player) {
 
 			@Override
 			public void process(GuessRound guessRound) {
@@ -29,7 +33,8 @@ public class PlayerInputTest extends BatchInputTest {
 			
 		};
 	}
-	
+
+	@Test
 	public void submittedByTest() {
 		PlayerInput input = getBatchInput();
 		Player player = input.submittedBy();

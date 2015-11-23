@@ -5,6 +5,8 @@ package com.eggnine.guessandbet;
 
 import java.util.Random;
 
+import org.junit.Test;
+
 /**
  * Test the basics provided by {@link Player}
  * 
@@ -20,23 +22,27 @@ public class PlayerTest {
 	public Player getPlayer() {
 		return new Player(INITIAL_COUNT, batchProcessor, batchProcessor, batchProcessor);
 	}
-	
+
+	@Test
 	public void addToCountTest() {
 		Player player = getPlayer();
 		player.addToCount(random.nextInt(MAX_COUNT + 1));
 	}
-	
+
+	@Test
 	public void addToCountNegativeTest() {
 		Player player = getPlayer();
 		player.addToCount(random.nextInt(MAX_COUNT + 1) * -1);
 	}
-	
+
+	@Test
 	public void removeFromCountPassTest() {
 		Player player = getPlayer();
 		player.removeFromCount(random.nextInt(INITIAL_COUNT) + 1);
 		
 	}
-	
+
+	@Test
 	public void removeFromCountFailTest() {
 		Player player = getPlayer();
 		player.removeFromCount(random.nextInt(MAX_COUNT) + INITIAL_COUNT + 1);
@@ -76,7 +82,7 @@ public class PlayerTest {
 		}
 		submitInput(inputType, player, value);
 	}
-	
+
 	public void submitInput(InputType inputType, Player player, Integer value) {
 		switch(inputType) {
 		case GUESS:
@@ -92,20 +98,25 @@ public class PlayerTest {
 			throw new IllegalArgumentException(String.format("%s is not listed for InputTypes in PlayerTest", inputType));	
 		}
 	}
-	
-	public void submitInputTwice(InputType inputType) {
+
+	//TODO: make parameterized by inputType
+	@Test
+	public void submitInputTwice() {
+		InputType inputType = InputType.GUESS;
 		Player player = getPlayer();
 		submitInput(inputType, player);
 		submitInput(inputType, player);
 	}
-	
+
+	@Test
 	public void submitAllInputs() {
 		Player player = getPlayer();
 		submitInput(InputType.GUESS, player);
 		submitInput(InputType.MIN_BET, player);
 		submitInput(InputType.MAX_BET, player);
 	}
-	
+
+	@Test
 	public void submitMultipleInputs() {
 		Player player = getPlayer();
 		submitInput(InputType.GUESS, player);
@@ -115,14 +126,18 @@ public class PlayerTest {
 		submitInput(InputType.MAX_BET, player);
 		submitInput(InputType.MIN_BET, player);
 	}
-	
-	public void submitInputTooHigh(InputType inputType) {
+
+	@Test
+	public void submitInputTooHigh() {
+		InputType inputType = InputType.MAX_BET;
 		Player player = getPlayer();
 		submitInput(inputType, player, true);
 		
 	}
-	
-	public void submitInputTooLow(InputType inputType) {
+
+	@Test
+	public void submitInputTooLow() {
+		InputType inputType = InputType.MIN_BET;
 		Player player = getPlayer();
 		submitInput(inputType, player, false);
 		

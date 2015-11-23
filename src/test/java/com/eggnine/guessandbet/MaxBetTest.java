@@ -10,11 +10,11 @@ import java.util.Random;
  * @since 1
  *
  */
-public class MaxBetTest extends PlayerInputTest {
+public class MaxBetTest extends PlayerInputTest<MaxBet> {
 	Random random = new Random();
 	Integer currentBet = getValidMaxBet(PlayerTest.INITIAL_COUNT);	
 
-	public MaxBet getPlayerInput() {
+	public MaxBet getBatchInput() {
 		return new MaxBet(player, currentBet);
 	}
 	
@@ -31,4 +31,12 @@ public class MaxBetTest extends PlayerInputTest {
 		}
 		return value;
 	}
+	
+	public void getBetTest() {
+		MaxBet maxBet = getBatchInput();
+		Integer bet = maxBet.getBet();
+		assert bet != null;
+		assert bet > 0;
+	}
+	
 }
