@@ -10,13 +10,16 @@ package com.eggnine.guessandbet;
  *
  */
 public class MinBet extends PlayerInput {
-	private static final Integer ANTE = 1;
+	public static final Integer ANTE = 1;
 
 	private Integer minBet;
 	
 	public MinBet(Player player, Integer minBet) {
 		super(player);
-		if(minBet < ANTE || minBet > player.getCoinCount()) {
+		if(minBet < ANTE) {
+			throw new IllegalArgumentException(String.format("Minimum Bet of %d is not valid when the Ante is %d", minBet, ANTE));
+		}
+		if(minBet > player.getCoinCount()) {
 			throw new IllegalArgumentException(String.format("Minimum Bet of %d is not applicable to player with CoinCount %d", minBet, player.getCoinCount()));
 		}
 		this.minBet = minBet;

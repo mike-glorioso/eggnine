@@ -127,7 +127,7 @@ public class PlayerTest {
 		submitInput(InputType.MIN_BET, player);
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void submitInputTooHigh() {
 		InputType inputType = InputType.MAX_BET;
 		Player player = getPlayer();
@@ -135,7 +135,7 @@ public class PlayerTest {
 		
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void submitInputTooLow() {
 		InputType inputType = InputType.MIN_BET;
 		Player player = getPlayer();

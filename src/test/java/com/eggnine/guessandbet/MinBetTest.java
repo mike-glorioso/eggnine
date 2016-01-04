@@ -5,6 +5,8 @@ package com.eggnine.guessandbet;
 
 import java.util.Random;
 
+import org.junit.Before;
+
 /**
  * Test {@link MinBet} by overriding the #getBatchInput(), etc.
  * @since 1
@@ -12,9 +14,15 @@ import java.util.Random;
  */
 public class MinBetTest extends PlayerInputTest<MinBet> {
 	Random random = new Random();
-	Integer currentBet = getValidMinBet(PlayerTest.INITIAL_COUNT);
-	public MinBet getPlayerInput() {
-		return new MinBet(player, currentBet);
+	Integer currentBet = 1;
+	
+	@Before
+	@Override
+	public void setup() {
+		if(currentBet == null) {
+			currentBet = 1;
+		}
+		super.setup();
 	}
 	
 	public MinBet getBatchInput() {
@@ -30,12 +38,14 @@ public class MinBetTest extends PlayerInputTest<MinBet> {
 		if(isTooHigh) {
 			value = coinCount + random.nextInt(maxCount) + 1;
 		} else {
-			value = random.nextInt(maxCount) * -1;
+			Integer ante = MinBet.ANTE;
+			value = random.nextInt(ante);
 		}
 		return value;
 	}
 	
-	public void getBetTest() {
+	public void getValidBetTest() {
+		currentBet = getValidMinBet(player.getCoinCount());
 		MinBet minBet = getBatchInput();
 		Integer bet = minBet.getBet();
 		assert bet != null;

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.eggnine.api.batchprocessing.BatchInput.BatchInputProcessStatusListener;
@@ -18,21 +19,31 @@ import com.eggnine.api.batchprocessing.BatchInput.BatchInputProcessStatusListene
  */
 public class BatchInputTest<I extends BatchInput> {
 	
-	protected I input = getBatchInput();
-	protected List<BatchInputListener<I>> inputListeners = new ArrayList<>();
-	protected List<BatchInputProcessStatusListener> statusListeners = new ArrayList<>();
+	protected I input = null;
+	protected List<BatchInputListener<I>> inputListeners = null;
+	protected List<BatchInputProcessStatusListener> statusListeners = null;
 	
-	void setup() {
-		BatchInputListenerTest<I,? extends BatchInputListener<I>> inputListenerTest = new BatchInputListenerTest<>();
-		BatchInputListener<I> inputListener = inputListenerTest.getBatchInputListener(true);
-		inputListeners.add(inputListener);
-		inputListener = inputListenerTest.getBatchInputListener(true);
-		inputListeners.add(inputListener);
-		BatchInputProcessStatusListenerTest processListenerTest = new BatchInputProcessStatusListenerTest();
-		BatchInputProcessStatusListener statusListener = processListenerTest.getStatusListener();
-		statusListeners.add(statusListener);
-		statusListener = processListenerTest.getStatusListener();
-		statusListeners.add(statusListener);
+	@Before
+	public void setup() {
+		if(inputListeners == null) {
+			inputListeners = new ArrayList<>();
+			BatchInputListenerTest<I,? extends BatchInputListener<I>> inputListenerTest = new BatchInputListenerTest<>();
+			BatchInputListener<I> inputListener = inputListenerTest.getBatchInputListener(true);
+			inputListeners.add(inputListener);
+			inputListener = inputListenerTest.getBatchInputListener(true);
+			inputListeners.add(inputListener);
+		}
+		if(statusListeners == null) {
+			statusListeners = new ArrayList<>();
+			BatchInputProcessStatusListenerTest processListenerTest = new BatchInputProcessStatusListenerTest();
+			BatchInputProcessStatusListener statusListener = processListenerTest.getStatusListener();
+			statusListeners.add(statusListener);
+			statusListener = processListenerTest.getStatusListener();
+			statusListeners.add(statusListener);
+		}
+		if(input == null) {
+			input = getBatchInput();
+		}
 	}
 	
 	@SuppressWarnings("unchecked") // subclasses must override this

@@ -3,6 +3,7 @@
  */
 package com.eggnine.guessandbet;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.eggnine.api.batchprocessing.BatchInputTest;
@@ -13,7 +14,16 @@ import com.eggnine.api.batchprocessing.BatchInputTest;
  *
  */
 public class PlayerInputTest<I extends PlayerInput> extends BatchInputTest<I> {
-	Player player = new PlayerTest().getPlayer();
+	Player player = null;
+	
+	@Before
+	@Override
+	public void setup() {
+		if(player == null) {
+			player = new PlayerTest().getPlayer();
+		}
+		super.setup();
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
