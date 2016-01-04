@@ -22,7 +22,7 @@ public class BatchInputListenerTest<I extends BatchInput,L extends BatchInputLis
 	protected I input = new BatchInputTest<I>().getBatchInput();
 	
 	@SuppressWarnings("unchecked") // subclasses must override
-	L getBatchInputListener(final Boolean acceptingInputs) {
+	public L getBatchInputListener(final Boolean acceptingInputs) {
 		BatchInputListener<?> listener = new BatchInputListener<I>() {
 			BatchInputProvider<I> provider = new BatchInputProvider<I>() {
 

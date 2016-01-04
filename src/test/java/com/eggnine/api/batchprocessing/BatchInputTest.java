@@ -22,7 +22,7 @@ public class BatchInputTest<I extends BatchInput> {
 	protected List<BatchInputListener<I>> inputListeners = new ArrayList<>();
 	protected List<BatchInputProcessStatusListener> statusListeners = new ArrayList<>();
 	
-	{
+	void setup() {
 		BatchInputListenerTest<I,? extends BatchInputListener<I>> inputListenerTest = new BatchInputListenerTest<>();
 		BatchInputListener<I> inputListener = inputListenerTest.getBatchInputListener(true);
 		inputListeners.add(inputListener);
@@ -33,10 +33,6 @@ public class BatchInputTest<I extends BatchInput> {
 		statusListeners.add(statusListener);
 		statusListener = processListenerTest.getStatusListener();
 		statusListeners.add(statusListener);
-	}
-	
-	void setup() {
-		
 	}
 	
 	@SuppressWarnings("unchecked") // subclasses must override this

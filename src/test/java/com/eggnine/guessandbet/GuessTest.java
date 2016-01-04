@@ -11,11 +11,17 @@ import java.util.Random;
  * @since 1
  *
  */
-public class GuessTest extends PlayerInputTest {
+public class GuessTest extends PlayerInputTest<Guess> {
 	Random random = new Random();
 	Integer currentGuess = getValidGuess();
+
 	public Guess getPlayerInput() {
 		return new Guess(player, currentGuess);
+	}
+	
+	@Override
+	public Guess getBatchInput() {
+		return getPlayerInput();
 	}
 	
 	public Integer getValidGuess() {

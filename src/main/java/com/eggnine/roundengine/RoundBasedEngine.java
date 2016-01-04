@@ -6,6 +6,7 @@ package com.eggnine.roundengine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,27 @@ public abstract class RoundBasedEngine<R extends Round> implements BatchProcesso
 
 	@Override
 	public Map<R, Collection<TriggerValidationFailure>> triggerBatchProcessing(BatchFilter<R> filter) {
+		if(filter == null) {
+			filter = new BatchFilter<R>() {
+
+				@Override
+				public R getBatch(Collection<R> batches,
+						Comparator<R> comparator, Integer index) {
+					List<R> filteredBatches = getBatches(batches);
+					Collections.sort(filteredBatches, comparator);
+					return filteredBatches.get(index);
+				}
+
+				@Override
+				public List<R> getBatches(Collection<R> batches) {
+					return new ArrayList<R>(batches);
+				}
+				
+			};
+		}
 		Collection<R> filteredRounds = filter.getBatches(rounds);
 		List<R> sortedRounds = new ArrayList<>(rounds.size());
+		sortedRounds.addAll(filteredRounds);
 		Collections.sort(sortedRounds);
 		Map<R, Collection<TriggerValidationFailure>> validatedRounds = new HashMap<>(filteredRounds.size());
 		Boolean noRoundSkipped = true;

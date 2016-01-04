@@ -14,5 +14,5 @@ import com.eggnine.api.batchprocessing.BatchInputListener;
  *
  */
 public interface MaxBetListener extends BatchInputListener<BatchInput> {
-	BatchInputProvider<MaxBet> addBatchInput(MaxBet maxBet);
+	public BatchInputProvider<MaxBet> addBatchInput(MaxBet maxBet);
 }

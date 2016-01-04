@@ -76,8 +76,9 @@ public class GuessAndBetEngineTest extends RoundEngineTest<GuessRound> {
 	@Test
 	public void addBatchInputGuessTest() throws BatchInputListenerException {
 		GuessAndBetEngine engine = getBatchProcessor();
-		BatchInputProvider<BatchInput> guessProvider = null;
-		guessProvider = engine.addBatchInput(new GuessTest().getBatchInput());
+		BatchInputProvider<Guess> guessProvider = null;
+		Guess guess = new GuessTest().getBatchInput();
+		guessProvider = engine.addBatchInput(guess);
 		assert guessProvider != null;
 		Collection<? extends BatchInput> inputs = guessProvider.getBatchInputs();
 		assert inputs != null;

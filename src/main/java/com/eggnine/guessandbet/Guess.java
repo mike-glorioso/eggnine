@@ -17,6 +17,10 @@ public class Guess extends PlayerInput {
 		super(player);
 		this.guess = guess;
 	}
+	
+	public Integer getGuess() {
+		return guess;
+	}
 
 	@Override
 	public void process(GuessRound guessRound) {

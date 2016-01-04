@@ -16,6 +16,8 @@ public class GuessAndBetEngine extends RoundBasedEngine<GuessRound> implements G
 
 	public static final Integer MIN_GUESS = 1;
 	public static final Integer MAX_GUESS = 100;
+	private Boolean acceptingInputs = false;
+	static Integer pot = 0;
 
 	@Override
 	protected GuessRound getRound() {
@@ -26,35 +28,34 @@ public class GuessAndBetEngine extends RoundBasedEngine<GuessRound> implements G
 	public com.eggnine.api.batchprocessing.BatchInputListener.BatchInputProvider<BatchInput> addBatchInput(
 			BatchInput input)
 			throws com.eggnine.api.batchprocessing.BatchInputListener.BatchInputListenerException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new BatchInputListenerException();
 	}
 
 	@Override
-	public com.eggnine.api.batchprocessing.BatchInputListener.BatchInputProvider<MaxBet> addBatchInput(
+	public BatchInputProvider<MaxBet> addBatchInput(
 			MaxBet maxBet) {
-		// TODO Auto-generated method stub
-		return null;
+		return getRound().addBatchInput(maxBet);
 	}
 
 	@Override
-	public com.eggnine.api.batchprocessing.BatchInputListener.BatchInputProvider<MinBet> addBatchInput(
+	public BatchInputProvider<MinBet> addBatchInput(
 			MinBet minBet) {
-		// TODO Auto-generated method stub
-		return null;
+		return getRound().addBatchInput(minBet);
 	}
 
 	@Override
-	public com.eggnine.api.batchprocessing.BatchInputListener.BatchInputProvider<Guess> addBatchInput(
+	public BatchInputProvider<Guess> addBatchInput(
 			Guess guess) {
-		// TODO Auto-generated method stub
-		return null;
+		return getRound().addBatchInput(guess);
 	}
 
 	@Override
 	public Boolean isAcceptingInputs() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.acceptingInputs;
+	}
+
+	void setAcceptingInputs(Boolean b) {
+		this.acceptingInputs = b;
 	}
 
 }

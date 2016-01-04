@@ -20,8 +20,6 @@ public class MaxBet extends PlayerInput {
 
 	@Override
 	public void process(GuessRound guessRound) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -31,7 +29,7 @@ public class MaxBet extends PlayerInput {
 	}
 
 	public Integer getBet() {
-		return null;
+		return this.maxBet;
 	}
 
 }

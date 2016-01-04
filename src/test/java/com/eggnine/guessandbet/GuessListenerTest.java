@@ -3,6 +3,7 @@
  */
 package com.eggnine.guessandbet;
 
+import com.eggnine.api.batchprocessing.BatchInputListener;
 import com.eggnine.api.batchprocessing.BatchInputListenerTest;
 
 /**
@@ -10,9 +11,9 @@ import com.eggnine.api.batchprocessing.BatchInputListenerTest;
  * @since 1
  *
  */
-public class GuessListenerTest extends BatchInputListenerTest {
+public class GuessListenerTest extends BatchInputListenerTest<Guess, BatchInputListener<Guess>> {
+
 	public GuessListener getBatchListener() {
 		return new GuessAndBetEngine();
 	}
-
 }

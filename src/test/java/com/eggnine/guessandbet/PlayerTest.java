@@ -20,7 +20,7 @@ public class PlayerTest {
 	GuessAndBetEngine batchProcessor = new GuessAndBetEngineTest().getBatchProcessor();
 	
 	public Player getPlayer() {
-		return new Player(INITIAL_COUNT, batchProcessor, batchProcessor, batchProcessor);
+		return new Player("Player Name", INITIAL_COUNT, batchProcessor, batchProcessor, batchProcessor);
 	}
 
 	@Test

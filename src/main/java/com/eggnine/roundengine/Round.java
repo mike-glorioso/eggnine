@@ -100,11 +100,13 @@ public class Round implements SequentialBatch<BatchInput>, BatchInputListener<Ba
 	}
 
 	@Override
-	public void process() {
+	public final void process() {
 		processingStartedAt = new Date();
-		for(BatchInput input: inputs) {
-			input.process(this);
-		}
+		processRound();
+		processingEndedAt = new Date();
+	}
+
+	public void processRound() {
 	}
 
 	@Override
