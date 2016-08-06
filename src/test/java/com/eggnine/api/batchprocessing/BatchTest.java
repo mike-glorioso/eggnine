@@ -18,8 +18,8 @@ public class BatchTest {
 	 * 
 	 * @return
 	 */
-	public <B extends BatchInput> Batch<B> getBatch() {
-		return new Batch<B>() {
+	public Batch<BatchInput> getBatch() {
+		return new Batch<BatchInput>() {
 
 			@Override
 			public Date getCreatedAt() {
@@ -56,8 +56,16 @@ public class BatchTest {
 	public void getCreatedAtTest() {
 		Batch<?> batch = getBatch();
 		Date date = batch.getCreatedAt();
-		assert date != null;
-		assert date.after(new Date());
+		if(date == null) {
+			throw new AssertionError("getCreatedAt returned a null date");
+		}
+		java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		//String.format("getCreatedAt returned %s", dateFormat.format(date));
+		Date now = new Date();
+		if (date.getTime() >= now.getTime()) {
+			throw new AssertionError(String.format("getCreatedAt returned %s but now is %s",
+					dateFormat.format(date), dateFormat.format(now)));
+		}
 	}
 
 	/**

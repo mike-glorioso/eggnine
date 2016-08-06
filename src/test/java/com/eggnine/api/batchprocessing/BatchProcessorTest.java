@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import java.util.Collections;
 
 /**
  *
@@ -19,22 +20,23 @@ import org.junit.Test;
 public class BatchProcessorTest<B extends Batch<BatchInput>> {
 
 	public BatchProcessor<B> getBatchProcessor() {
-		return new BatchProcessor<B>() {
+		return (BatchProcessor<B>) new BatchProcessor<Batch<BatchInput>>() {
+			Collection<Batch<BatchInput>> batches = Collections.singletonList(new BatchTest().getBatch());
 
 			@Override
-			public Map<B, Collection<TriggerValidationFailure>> triggerBatchProcessing(
-					BatchFilter<B> filter) {
-				Collection<B> filteredBatches = filter.getBatches(getBatches());
-				Map<B, Collection<TriggerValidationFailure>> results = new HashMap<>();
-				for(B batch : filteredBatches) {
+			public Map<Batch<BatchInput>, Collection<TriggerValidationFailure>> triggerBatchProcessing(
+					BatchFilter<Batch<BatchInput>> filter) {
+				Collection<Batch<BatchInput>> filteredBatches = filter.getBatches(getBatches());
+				Map<Batch<BatchInput>, Collection<TriggerValidationFailure>> results = new HashMap<>();
+				for(Batch<BatchInput> batch : filteredBatches) {
 					results.put(batch, null);
 				}
 				return results;
 			}
 
 			@Override
-			public Collection<B> getBatches() {
-				return Collections.emptyList();
+			public Collection<Batch<BatchInput>> getBatches() {
+				return batches;
 			}
 			
 		};
@@ -43,8 +45,12 @@ public class BatchProcessorTest<B extends Batch<BatchInput>> {
 	@Test
 	public void returnBatchesTest() {
 		BatchProcessor<B> batchProcessor = getBatchProcessor();
-		assert batchProcessor.getBatches() != null;
-		assert !batchProcessor.getBatches().isEmpty();
+		if(batchProcessor.getBatches() == null) {
+			throw new AssertionError("getBatches returned null");
+		}
+		if(batchProcessor.getBatches().isEmpty()) {
+			throw new AssertionError("getBatches returned empty collection");
+		}
 	}
 	
 	@Test
