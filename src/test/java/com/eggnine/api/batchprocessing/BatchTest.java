@@ -61,6 +61,10 @@ public class BatchTest {
 		}
 		java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		//String.format("getCreatedAt returned %s", dateFormat.format(date));
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {
+		}
 		Date now = new Date();
 		if (date.getTime() >= now.getTime()) {
 			throw new AssertionError(String.format("getCreatedAt returned %s but now is %s",

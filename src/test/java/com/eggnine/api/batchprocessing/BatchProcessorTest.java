@@ -60,7 +60,6 @@ public class BatchProcessorTest<B extends Batch<BatchInput>> {
 		Map<B, Collection<TriggerValidationFailure>> results = batchProcessor.triggerBatchProcessing(noReturnsFilter);
 		List<Collection<TriggerValidationFailure>> invalidResults = new ArrayList<>();
 		invalidResults.addAll(results.values());
-		invalidResults.removeAll(null);
 		assert invalidResults.isEmpty();
 	}
 
